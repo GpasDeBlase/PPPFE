@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         // Lancer (si on peut tirer)
         if (Input.GetKeyUp(KeyCode.Mouse0) && canThrow) Throwing();
 
-        // Téléportation sur le projectile si un projectile existe (_prog = true)
+        // Téléportation sur le projectile si un projectile existe (_proj = true)
         if (Input.GetKeyDown(KeyCode.Mouse1) && (_proj == true)) Teleportation();
 
         // Où est la souris
