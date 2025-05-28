@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectile;               // reference au prefab du projectile, a faire spawn
 
     // Variables privées
+    [SerializeField] private Vector3 _checkPos;     // checkpoint où respawn
     private Rigidbody2D rb;                     // rigidBody du gameObject Player
     private float _horizontalInput;             // -1 ou 1 suivant si le joueur appuie sur Q ou D
     private int jumpsRemaining = 2;             // nombre de sauts restant
@@ -35,12 +36,15 @@ public class PlayerController : MonoBehaviour
         set { canThrowProjectile = value; }
     }
 
+    
+    /// /////////////
     // Instructions a faire au lancement du jeu
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         jumpsRemaining = nbrJump;
         canThrow = true;
+        _checkPos = this.gameObject.transform.position;
     }
 
     // FixedUpdate pour les mouvements horizontaux du joueur (ça fonctionne mieux ici)
@@ -57,7 +61,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // Debugs
-        Debug.Log(canThrow);
+        //Debug.Log(canThrow);
 
         // Orientation personnage (pour que le tir parte dans la derniere direction vers laquelle le personnage a avance)
         if (Input.GetKeyDown(KeyCode.A)) projectileSpawner.transform.localPosition = new Vector3(-0.6f, 0f, 0f);
@@ -66,8 +70,11 @@ public class PlayerController : MonoBehaviour
         // JUMP
         if (Input.GetButtonDown("Jump")) Jump();
 
-        // Détection sol
-        OnGround();
+        // Respawn
+        if (Input.GetButtonDown("Respawn")) Respawn();
+
+        // Détection sol (seulement quand le joueur n'as plus de sauts)
+        if(jumpsRemaining == 0) OnGround();
 
         // Lancer du projectile
         // Visée (si on peut tirer)
@@ -83,13 +90,24 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 8) Respawn();
+    }
+
     private void Jump()
     {
-        if (jumpsRemaining >1)              // on regarde si il reste des sauts a disposition
+        if (jumpsRemaining >=1)                                                 // on regarde si il reste des sauts a disposition
         {
-            rb.AddForce(Vector2.up * jumpStrenght, ForceMode2D.Impulse);
+            rb.linearVelocity = new Vector2(0, 0);                              // On meet la velocité a 0 pour toujours faire un saut a la meme hauteur
+            rb.AddForce(Vector2.up * jumpStrenght, ForceMode2D.Impulse);        // On ajoute une impulsion
             jumpsRemaining -= 1;
         }
+    }
+
+    private void Respawn()
+    {
+        rb.position = _checkPos;
     }
 
     private void OnGround()
@@ -132,7 +150,8 @@ public class PlayerController : MonoBehaviour
     {
         var _newpos = _proj.transform.position;     // on recupere la position du projectile
         Destroy(_proj);                             // puis on le detruit
-        canThrow = true;                            // on redonne la possibilite de tirer
         rb.position = _newpos;                      // on "tp" le joueur sur la derniere position du projectile
+        rb.linearVelocity = new Vector2(0, 0);      // on remet la vélocité a 0 pour éviter que le joueur tombe
+        canThrow = true;                            // on redonne la possibilite de tirer
     }
 }
