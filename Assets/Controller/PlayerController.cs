@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public GameObject checkSol;                 // reference au gameObject qui vérifie si le joueur touche le sol
     public GameObject projectileSpawner;        // reference au gameObject qui indique ou va spawn le projectile
     public GameObject projectile;               // reference au prefab du projectile, a faire spawn
+    public GameObject sprite;                   // reference au gameObject du Sprite pour le désactiver a la mort
+    public ParticleSystem deathParticle;            // reference a la particule a jouer quand le perso meurt
 
     // Variables privées
     [SerializeField] private Vector3 _checkPos;     // checkpoint où respawn
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private int jumpsRemaining = 2;             // nombre de sauts restant
     private bool canThrowProjectile;            // est ce que le joueur peut lancer un projectile
     private GameObject _proj;                   // Instance du projectile
+    private bool _isRespawning;                 // Pour éviter qu'i y ait plusieurs fois la coroutine de respawn en meme temps
 
     // Propriétés
     public bool canThrow                        // propriété pour get et set canThrowProjectile pour que les projectiles puissent modifier ce bool
@@ -71,10 +74,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump")) Jump();
 
         // Respawn
-        if (Input.GetButtonDown("Respawn")) Respawn();
+        if ((Input.GetButtonDown("Respawn")) && (_isRespawning == false)) StartCoroutine(Respawn());
 
         // Détection sol (seulement quand le joueur n'as plus de sauts)
-        if(jumpsRemaining == 0) OnGround();
+        if (jumpsRemaining == 0) OnGround();
 
         // Lancer du projectile
         // Visée (si on peut tirer)
@@ -92,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == 8) Respawn();
+        if ((other.gameObject.layer == 8) && (_isRespawning == false)) StartCoroutine(Respawn());
     }
 
     private void Jump()
@@ -105,9 +108,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Respawn()
+    IEnumerator Respawn()
     {
-        rb.position = _checkPos;
+        _isRespawning = true;                                                   // On évite que la coroutine se lance plusieurs fois en meme temps
+
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;                      // on enleve les mouvements au joueur
+        deathParticle.Play();                                                   // On joue la particule
+        sprite.SetActive(false);                                                // On désactive le sprite en meme temps
+
+        yield return new WaitForSeconds(deathParticle.main.duration);           // On attend que la particule finisse d'etre jouer pour effectuer la prochaine action
+
+        rb.position = _checkPos;                                                // On tp le joueur
+        rb.linearVelocity = new Vector2(0, 0);                                  // On met la vélocité a 0
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;                 // On remet jsute le freeze sur la rotation
+        sprite.SetActive(true);                                                 // On réactive le sprite
+
+        _isRespawning = false;                                                  // On remet la possiblité de respawn
     }
 
     private void OnGround()

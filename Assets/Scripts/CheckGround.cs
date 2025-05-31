@@ -28,7 +28,7 @@ public class CheckGround : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 3) _isTriggered = true;       // _isTriggered va nous dire si le gameeobject est dans un sol
+        if (collision.gameObject.layer == 3) _isTriggered = true;       // _isTriggered va nous dire si le gameobject est dans un sol
     }
 
     private void OnTriggerExit2D(Collider2D other)
