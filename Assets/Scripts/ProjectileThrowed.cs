@@ -16,7 +16,6 @@ public class ProjectileThrowed : MonoBehaviour
     void Start()
     {
         StartCoroutine(Autodestruction());
-        mask = LayerMask.GetMask("Ground");
     }
 
     void Update()
@@ -26,7 +25,7 @@ public class ProjectileThrowed : MonoBehaviour
 
     private void OnTriggerEnter2D (Collider2D collider)
     {
-        if (collider.gameObject.layer == 3)
+        if ((collider.gameObject.layer == 3) || (collider.gameObject.layer == 8))
         {
             player.GetComponent<PlayerController>().canThrow = true;    // change canThrow dans Player avant de se détruire
             Instantiate(deathParticle,gameObject.transform.position, gameObject.transform.rotation);

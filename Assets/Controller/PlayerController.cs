@@ -21,10 +21,10 @@ public class PlayerController : MonoBehaviour
     public GameObject projectileSpawner;        // reference au gameObject qui indique ou va spawn le projectile
     public GameObject projectile;               // reference au prefab du projectile, a faire spawn
     public GameObject sprite;                   // reference au gameObject du Sprite pour le désactiver a la mort
-    public ParticleSystem deathParticle;            // reference a la particule a jouer quand le perso meurt
+    public ParticleSystem deathParticle;        // reference a la particule a jouer quand le perso meurt
 
     // Variables privées
-    [SerializeField] private Vector3 _checkPos;     // checkpoint où respawn
+    private Vector3 _checkPos;                   // checkpoint où respawn
     private Rigidbody2D rb;                     // rigidBody du gameObject Player
     private float _horizontalInput;             // -1 ou 1 suivant si le joueur appuie sur Q ou D
     private int jumpsRemaining = 2;             // nombre de sauts restant
@@ -96,6 +96,8 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if ((other.gameObject.layer == 8) && (_isRespawning == false)) StartCoroutine(Respawn());
+
+        if (other.gameObject.layer == 9) _checkPos = other.gameObject.transform.position + new Vector3(0, 1, 0);
     }
 
     private void Jump()
