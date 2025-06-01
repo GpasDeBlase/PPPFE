@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectile;               // reference au prefab du projectile, a faire spawn
     public GameObject sprite;                   // reference au gameObject du Sprite pour le désactiver a la mort
     public ParticleSystem deathParticle;        // reference a la particule a jouer quand le perso meurt
+    public LevelManager lm;                    // reference au levelManager pour afficher le nombre de mort dans le niveau
 
     // Variables privées
     private Vector3 _checkPos;                   // checkpoint où respawn
@@ -124,6 +125,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(0, 0);                                  // On met la vélocité a 0
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;                 // On remet jsute le freeze sur la rotation
         sprite.SetActive(true);                                                 // On réactive le sprite
+        lm.nbrMorts += 1;
 
         _isRespawning = false;                                                  // On remet la possiblité de respawn
     }
