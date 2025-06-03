@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b06d62cbcbf3fa74eb4390c70efc05fd
+guid: 1663e9131e8712c4dafc9d0a10416e88
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1099216812784771530
-    second: DangerDeMort_0
+      213: -7670485267309540912
+    second: lock_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DangerDeMort_0
+      name: lock_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 495
-        height: 467
+        x: 145
+        y: 87
+        width: 303
+        height: 419
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 63e93d6f12cceb0f0800000000000000
-      internalID: -1099216812784771530
+      spriteID: 0d9c5231a46fc8590800000000000000
+      internalID: -7670485267309540912
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      DangerDeMort_0: -1099216812784771530
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

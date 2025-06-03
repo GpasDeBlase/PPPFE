@@ -21,7 +21,7 @@ public class CheckGround : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
         if ((rb.linearVelocity.y == 0) && (_isTriggered = true)) _isGrounded = true;
         else _isGrounded = false;
     }

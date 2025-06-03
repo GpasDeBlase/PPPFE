@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
         _isRespawning = false;                                                  // On remet la possiblité de respawn
     }
-
+    
     private void OnGround()
     {
         // checksol possede son propre script, on veut juste le resultat de isGrounded
