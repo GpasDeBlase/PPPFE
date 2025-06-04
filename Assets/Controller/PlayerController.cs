@@ -98,6 +98,8 @@ public class PlayerController : MonoBehaviour
     {
         if ((other.gameObject.layer == 8) && (_isRespawning == false)) StartCoroutine(Respawn());
 
+        if ((other.gameObject.layer == 10) && (_isRespawning == false)) StartCoroutine(Respawn());
+
         if (other.gameObject.layer == 9) _checkPos = other.gameObject.transform.position + new Vector3(0, 1, 0);
     }
 
