@@ -18,9 +18,9 @@ public class ProjectileThrowed : MonoBehaviour
         StartCoroutine(Autodestruction());
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);   // le projectile avance droit devant lui
+        transform.Translate(Vector3.up * speed * Time.fixedDeltaTime);   // le projectile avance droit devant lui
     }
 
     private void OnTriggerEnter2D (Collider2D collider)
